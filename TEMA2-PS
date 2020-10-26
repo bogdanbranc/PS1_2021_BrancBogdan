@@ -1,0 +1,50 @@
+#include <LiquidCrystal.h>         
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2); 
+const int inPin = 0;
+int h=22;
+int m=45;
+int s=55;
+void setup()
+{
+  lcd.begin(16,2);
+  Serial.begin(9600);
+}
+void loop()
+{
+  int value = analogRead(inPin);
+  
+  float millivolts = (value / 1024.0 * 5000);
+  float celsius = (millivolts-500)/10;
+  
+  lcd.setCursor(0,0);
+  lcd.write("Temp = ");
+  lcd.print(celsius,0);           //temperatura
+  Serial.print(celsius);
+  lcd.print("`C");
+  
+  
+  lcd.setCursor(0,1);            //timer
+  s=s+1;
+  lcd.write("Ora ");
+  lcd.print(h);
+  lcd.print(":");
+  lcd.print(m);
+  lcd.print(":");
+  lcd.print(s);
+  delay(1000);
+  lcd.clear();
+  if(s==59)                 //calcul pentru incrementarea in ora
+  {
+    s=-1;
+    m=m+1;
+  }
+  if(m==60)
+  {
+    m=0;
+    h=h+1;
+  }
+  if(h==24)
+  {
+   h=0; 
+  } 
+}
